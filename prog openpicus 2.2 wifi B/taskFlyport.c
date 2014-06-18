@@ -2,37 +2,42 @@
 #include "grovelib.h"
 #include "rht03.h"
 
-
+    
+	
 	unsigned char Humd ;
 	unsigned char Tempt ;
 	unsigned char Terr ; 
 	unsigned char Lum ;		
 
     //comunicazione con server
-	unsigned char arraysens[5];      				    //array dati sensori
+	unsigned char arraysens[5];      		    //array dati sensori
 	char arrayset[9];   						//array parametri arrivati dal server
 	char arraymess[9];  						//array dei messaggi
 	
 	//sensori
-	char temperature[5];
-    char humidity[5];
-    char terrain[5];
-	char light[5];
+	//char temperature[5];
+    //char humidity[5];
+    //char terrain[5];
+	//char light[5];
     
 	//server
 	int ID = 1;
 	
 	//comandi
 	int pompa;
-	int RGB_R;
+	int RGB_R = off;
 	int RGB_G;
-	int RGB_B;
-	int RGB_RB;
-	int RGB_RG;
+	int RGB_B = off;
+	int RGB_RB = off;    						//purple
+	int RGB_RG;									//yellow
 	
 	//alimentazioni
 	int alimentatore;
     float battery_perc;
+	
+	int p=0;
+	
+	void *Relay;
 	
 BOOL FirstConnect()
 {		
@@ -200,54 +205,64 @@ BOOL SendWarning()
 
 void operazioni()
 { 
-/*arraysens[0]= humidity[];
-arraysens[1]= (unsigned char) temperature;
-arraysens[2]= (unsigned char) terrain;
-arraysens[3]= (unsigned char) light;*/
 
-if(arraysens[0]<arrayset[0])
+
+
+if(Humd<arrayset[0])
   {
 	// operazione da effetture se l'umidità è minore del parametro : invia al server : spostami in un luogo più umido ( messaggio 1)
 	arraymess[1]=33+1;
   }
-if(arraysens[0]>arrayset[4])
+if(Humd>arrayset[4])
   {
 	// operazione da effetture se l'umidità è maggiore del parametro : invia al server : spostami in un luogo più asciutto	(messaggio 2)
 	arraymess[2]=33+2;
   }
-if(arraysens[1]<arrayset[1])
+if(Tempt<arrayset[1])
   {
 	// operazione da effetture se la temperatura è minore del parametro : invia al server: ho freddo (messaggio 3)
 	arraymess[3]=33+3;
   }
-if(arraysens[1]>arrayset[5])
+if(Tempt>arrayset[5])
   {
 	// operazione da effetture se la temperature è maggiore del parametro : invia al server : ho caldo (messaggio 4)
 	arraymess[4]=33+4;
   }
-if(arraysens[2]<arrayset[2])
-  {
-	// operazione da effetture se l'umidità del terreno è minore del parametro : accendo la pompa (messaggio 5)
-	pompa = on;
+if(Terr<(unsigned char)arrayset[2])
+  { 
+	  UARTWrite(1, "Terr minore");
+	p=p+1
+	if(p==3)
+	{
+			pompa = on;
+			p=0;
+	}	
+
+	
 	arraymess[5]=33+5;
+	// operazione da effetture se l'umidità del terreno è minore del parametro : accendo la pompa (messaggio 5)
+	
   }
-  if(arraysens[2]>arrayset[6])
+  if(Terr>(unsigned char)arrayset[6])
   {
+	  UARTWrite(1, "Terr maggiore");
+	  p=0;
+	  pompa=off;
 	// operazione da effetture se l'umidità del terreno è maggiore del parametro : regola la pompa in modo che la pompa lavori di meno 
   }
-if(arraysens[3]<arrayset[3])
+if(Lum<arrayset[3])
   {
 	// operazione da effetture se la luce è minore del parametro : invia al server : ho bisogno di luce (messaggio 6)
 	IOPut(RGB_RG, on);
 	arraymess[6]=33+6;
   }
-if(arraysens[3]>arrayset[7])
+if(Lum>arrayset[7])
   {
 	// operazione da effetture se la luce è maggiore del parametro : invia al server: spostami in un posto con un po' di ombra (messaggio 7) 
 	arraymess[7]=33+7;
   }
 }
-
+/*
 void serbatoio()
 {   
 	IOInit(p5, inup);                           // digital pin5 (DIG3)
@@ -257,7 +272,8 @@ void serbatoio()
 	    arraymess[7]=33+7;                         //comunica al server: rabboccare acqua (messagio 8)
 	}
 }
-
+*/
+/*
 void pompa_acqua()
 {
 	const int pot = 100;                        //Initialize % of power
@@ -268,29 +284,26 @@ void pompa_acqua()
 	{
 	  if(pompa == on)
 	  {
-	PWMInit(1,1000,pot);                        //Initialize PWM1 to work at 1000 Hz, pot % of duty
-	PWMOn(p10, 1);                              //Assign pin 10 as PWM1 and turns it on
-	for(; time<=0; time--)
-	{
-	PWMDuty(pot, 1);                            //Change the duty at pot value
-	vTaskDelay(1000);                     
-	}
-		}
-	else 
-	{
-	  IOPut(10, off);
-	}	
-}
-}
+	  IOPut(10, on);
 
+	  vTaskDelay(5000);
+	 
+	  IOPut(10, off);
+	  }
+	}
+}
+*/
 
 void led()
 {
     IOInit(p11,out);                            //connected to Red led
     IOInit(p12,out);                			//connected to Green led
     IOInit(p14,out);                			//connected to Blue led
-
-   if(RGB_G == on)
+    if(RGB_G == off)
+	{
+		return;
+	}
+	if(RGB_G == on)
 	{
 		IOPut(p11, on);
 		IOPut(p12, off);
@@ -360,6 +373,8 @@ void led()
 }
 
 
+
+
 void FlyportTask()
 {
 	// Flyport connects to default network
@@ -377,20 +392,24 @@ void FlyportTask()
     void *rht03 = new(RHT03);
 	void *light_sensor = new (An_i);
     void *moisture_sensor = new (An_i);
+	void *relay = new(Dig_io, OUT); 
+	attachToBoard(board, relay, DIG3);          // Device attached to board, on digital p10 (DIG3)
+    
+	set(relay, ON);								// Turns ON the relay and Closes the relay contact
+    set(relay, OFF);							// Turns OFF the relay and Opens the relay contact	
 
 	
 	attachToBoard(board,rht03,DIG1);            // Attach Temperature-Humidity, on digital port1 (DIG1)
 	attachToBoard(board, light_sensor, AN3);    // Light attached to board, on analog port 3 (AN3)
 	attachToBoard(board, moisture_sensor, AN2); // Attach Moisture, on analog port 2 (AN2)                
-	
+	 
 	configure(rht03, 3);
-
 	IOInit(p6,inup);
 	IOInit(p23,inup);
 	void *batt = new (An_i);
 	attachToBoard(board, batt, p23);
 	
-	
+	char msg[100];
 	int Send = 0;
 	
 	while(1)
@@ -399,25 +418,25 @@ void FlyportTask()
 		{
 			// Reading external humidity 
 			Humd = (unsigned char)  get(rht03, HUMD);
-			sprintf (humidity, "%3d\r", Humd);
+			//sprintf (humidity, "%3d\r", Humd);
 			
 			arraysens[0] = Humd;
 			
 			// Reading external temperature 
 			Tempt = (unsigned char) get(rht03, TEMP);
-			sprintf (temperature, "%3d\r", Tempt);
+			//sprintf (temperature, "%3d\r", Tempt);
 			
 			arraysens[1] = Tempt;
 			
 			// Reading terren humidity
 			Terr = (unsigned char) get(moisture_sensor);
-			sprintf (terrain, "%3d\r", Terr);
+			//sprintf (terrain, "%3d\r", Terr);
 	
 			arraysens[2] = Terr;
 			
 			// Reading light
 			Lum = (unsigned char) get(light_sensor);
-			sprintf (light, "%3d\r", Lum);
+			//sprintf (light, "%3d\r", Lum);
 			arraysens[3] = Lum;
 		}
 
@@ -457,32 +476,36 @@ void FlyportTask()
 	
 }
 */
+
+        //serbatoio();
+		led();
 		operazioni();
+		if(pompa==on)
+		{
+			set(relay, on);					        	// open relay contact
+		    vTaskDelay(1000);
+			set(relay, off);					        // close relay contact	
+			pompa=off;
+		}
 		led();
-		serbatoio();
-		led();
-		pompa_acqua();
-		led();
-	
-	
-		//sprintf(msg,"%d %d %d %d %d %d %d \r\n",arrayset[0],arrayset[1],arrayset[2],arrayset[3],arrayset[4],arrayset[5],arrayset[6]);
-		//UARTWrite(1, msg);
-		char msgtemp[100];
-		char msghum[100];
-        char msgterr[100];
-		char msglig[100];
-		sprintf(msgtemp,"temperatura: %s \n", temperature);
-		sprintf(msghum,"umidità aria: %s \n", humidity);
-		sprintf(msgterr,"umidità terreno: %s \n", terrain);
-		sprintf(msglig,"luce: %s \n \n ", light);
+		
+		
+		
+		sprintf(msg,"%d %d %d %d %d %d %d \r\n",arrayset[0],arrayset[1],arrayset[2],arrayset[3],arrayset[4],arrayset[5],arrayset[6]);
+		UARTWrite(1, msg);
+		char msgtemp[50];
+		char msghum[50];
+        char msgterr[50];
+		char msglig[50];
+		sprintf(msgtemp,"temperatura: %d \n", Tempt);
+		sprintf(msghum,"umidità aria: %d \n", Humd);
+		sprintf(msgterr,"umidità terreno: %d \n", Terr);
+		sprintf(msglig,"luce: %d \n \n ", Lum);
 		UARTWrite(1, msgtemp);
 		UARTWrite(1, msghum);
 		UARTWrite(1, msgterr);
 		UARTWrite(1, msglig);
-		char prova[100];
-		//sprintf(prova,"%d %d %d %d %d %d\r \n \n",(unsigned char)arraysens[0],(unsigned char)arraysens[1],(unsigned char)arraysens[2],(unsigned char)arraysens[3],(unsigned char)arraysens[4],(unsigned char)arraysens[5]);
-		//UARTWrite(1, prova);
-		vTaskDelay(1000);
+		vTaskDelay(500);
 		Send++;
 		if(Send == 1)
 		{
