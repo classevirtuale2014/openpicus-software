@@ -46,7 +46,7 @@ ERR_WRONG_PORTNUM	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wi
 ERR_WRONG_PORT_TYPE	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	78;"	kind:d	line:78
 FREQUENCY	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\basicdevices.h	72;"	kind:d	line:72
 FirstConnect	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^BOOL FirstConnect()$/;"	kind:f	line:42
-FlyportTask	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^void FlyportTask()$/;"	kind:f	line:378
+FlyportTask	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^void FlyportTask()$/;"	kind:f	line:279
 GROVEBOARD_H	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveboard.h	50;"	kind:d	line:50
 GROVEINTERFACES_H	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	50;"	kind:d	line:50
 GROVELIB_H	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\grovelib.h	49;"	kind:d	line:49
@@ -64,7 +64,6 @@ ICOn	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\Ext
 ID	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int ID = 1;$/;"	kind:v	line:24
 INIT_CORRECT	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	75;"	kind:d	line:75
 IOInit_	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\input_capture.h	/^void IOInit_(int, int);$/;"	kind:p	line:52
-InBuffer	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	char InBuffer[15];$/;"	kind:l	line:164
 InBuffer	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	char InBuffer[15];$/;"	kind:l	line:80
 Index2	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^		int Index2 = n - 2;$/;"	kind:l	line:103
 Interface	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveboard.h	/^struct Interface$/;"	kind:s	line:65
@@ -85,18 +84,13 @@ P2_SHARED	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Lib
 PWM	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\basicdevices.h	71;"	kind:d	line:71
 Pin1	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	/^	BYTE Pin1;			\/\/ 	Pin1 number - Association with Flyport pin number (analog channel for analog ports)$/;"	kind:m	line:87	struct:__anon1	access:public
 Pin2	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	/^	BYTE Pin2;			\/\/	Pin2 number - Association with Flyport pin number (analog channel for analog ports)$/;"	kind:m	line:88	struct:__anon1	access:public
-RGB_B	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_B = off;$/;"	kind:v	line:30
-RGB_G	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_G;$/;"	kind:v	line:29
-RGB_R	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_R = off;$/;"	kind:v	line:28
-RGB_RB	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_RB = off;    						\/\/purple$/;"	kind:v	line:31
-RGB_RG	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_RG;									\/\/yellow$/;"	kind:v	line:32
-Relay	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *Relay;$/;"	kind:v	line:40
-RxLen	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RxLen = 0;$/;"	kind:l	line:166
+RGB_G	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_G;$/;"	kind:v	line:30
+RGB_RG	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RGB_RG;									\/\/yellow led$/;"	kind:v	line:33
 RxLen	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int RxLen = 0;$/;"	kind:l	line:82
 SINGLE_PORT	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	65;"	kind:d	line:65
 SPI	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\basicdevices.h	68;"	kind:d	line:68
 ScanCompleted	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\WF_Events.c	/^BOOL ScanCompleted = FALSE;$/;"	kind:v	line:7
-Send	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int Send = 0;$/;"	kind:l	line:413
+Send	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int Send = 0;$/;"	kind:l	line:317
 SendUpdate	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^BOOL SendUpdate()$/;"	kind:f	line:132
 SensorClass	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\grovelib.h	/^struct SensorClass$/;"	kind:s	line:67
 TEMP	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\rht03.h	60;"	kind:d	line:60
@@ -111,7 +105,7 @@ WorkSocket	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\ta
 _An_i	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\analog_in.c	/^static const struct SensorClass _An_i =$/;"	kind:v	line:94	typeref:struct:SensorClass	file:
 _Board	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\groveboard.c	/^static const struct BoardClass _Board =$/;"	kind:v	line:327	typeref:struct:BoardClass	file:
 _Dig_io	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\digital_io.c	/^static const struct SensorClass _Dig_io =$/;"	kind:v	line:155	typeref:struct:SensorClass	file:
-alimentatore	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int alimentatore;$/;"	kind:v	line:35
+alimentatore	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int alimentatore;$/;"	kind:v	line:36
 aninext	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\groveboard.c	/^	struct Interface *aninext;$/;"	kind:m	line:87	struct:Board	typeref:struct:Board::Interface	file:	access:public
 anistart	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\groveboard.c	/^	struct Interface *anistart;$/;"	kind:m	line:86	struct:Board	typeref:struct:Board::Interface	file:	access:public
 ap	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^	va_list ap;$/;"	kind:l	line:114
@@ -131,9 +125,9 @@ attachSensorToI2CBus	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2
 attachSensorToUartBus	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\groveboard.c	/^struct Interface *attachSensorToUartBus(void *_board,int port,int speed,BYTE module,BYTE interf)$/;"	kind:f	line:273
 attachToBoard	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\grovelib.h	/^int attachToBoard(void *,void *,int);$/;"	kind:p	line:61
 attachToBoard	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^int attachToBoard(void *board,void *sensor,int numb)$/;"	kind:f	line:97
-batt	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *batt = new (An_i);$/;"	kind:l	line:409
-battery_perc	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    float battery_perc;$/;"	kind:v	line:36
-board	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    void *board = new(GroveNest);$/;"	kind:l	line:391
+batt	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *batt = new (An_i);$/;"	kind:l	line:313
+battery_perc	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    float battery_perc;$/;"	kind:v	line:37
+board	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    void *board = new(GroveNest);$/;"	kind:l	line:295
 boardType	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\groveboard.c	/^	int boardType;$/;"	kind:m	line:81	struct:Board	file:	access:public
 buf	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\WF_Events.c	/^	char buf[8];$/;"	kind:l	line:44
 class	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\analog_in.c	/^	const void *class;$/;"	kind:m	line:57	struct:An_i	file:	access:public
@@ -187,17 +181,13 @@ index	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFly
 inter	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\analog_in.c	/^	struct Interface *inter;$/;"	kind:m	line:58	struct:An_i	typeref:struct:An_i::Interface	file:	access:public
 inter	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\digital_io.c	/^	struct Interface *inter;$/;"	kind:m	line:58	struct:Dig_io	typeref:struct:Dig_io::Interface	file:	access:public
 isShared	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveinterfaces.h	/^	BYTE isShared;		\/\/	Pin sharing - Indicates if the pins of the ports are shared with other ports, like in Arduino UNO Grove shield$/;"	kind:m	line:91	struct:__anon1	access:public
-led	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^void led()$/;"	kind:f	line:297
 len	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int len = TCPWrite(WorkSocket, OutBuffer, OutBuffer[0]);$/;"	kind:l	line:162
 len	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int len = TCPWrite(WorkSocket, OutBuffer, OutBuffer[0]);$/;"	kind:l	line:75
-light_sensor	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *light_sensor = new (An_i);$/;"	kind:l	line:393
-moisture_sensor	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    void *moisture_sensor = new (An_i);$/;"	kind:l	line:394
-msg	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	char msg[100];$/;"	kind:l	line:412
+light_sensor	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *light_sensor = new (An_i);$/;"	kind:l	line:297
+moisture_sensor	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    void *moisture_sensor = new (An_i);$/;"	kind:l	line:298
+msg	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	char msg[100];$/;"	kind:l	line:316
 msg	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	char msg[9];$/;"	kind:l	line:158
-msghum	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^		char msghum[50];$/;"	kind:l	line:497
-msglig	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^		char msglig[50];$/;"	kind:l	line:499
-msgtemp	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^		char msgtemp[50];$/;"	kind:l	line:496
-msgterr	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^        char msgterr[50];$/;"	kind:l	line:498
+msgsens	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^		char msgsens[400];$/;"	kind:l	line:478
 n	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int n = 0;$/;"	kind:l	line:100
 new	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^void *new(const void *_class, ...)$/;"	kind:f	line:63
 new_board	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^static void *new_board(const void *,va_list ap);$/;"	kind:p	line:58	file:
@@ -212,8 +202,8 @@ p	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\Extern
 p	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\groveboard.c	/^	struct Interface *p;$/;"	kind:l	line:276
 p	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^	void *p = calloc(1, class->size);$/;"	kind:l	line:162
 p	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^	void *p = calloc(1, class->size);$/;"	kind:l	line:184
-p	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int p=0;$/;"	kind:v	line:38
-pompa	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int pompa;$/;"	kind:v	line:27
+p	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int p=0;$/;"	kind:v	line:39
+pompa	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	int pompa;$/;"	kind:v	line:28
 port	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\groveboard.h	/^	GrovePort *port;$/;"	kind:m	line:68	struct:Interface	access:public
 pwm_duty	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\digital_io.c	/^	float* pwm_duty;$/;"	kind:m	line:62	struct:Dig_io	file:	access:public
 pwm_frequency	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\digital_io.c	/^	float* pwm_frequency;$/;"	kind:m	line:61	struct:Dig_io	file:	access:public
@@ -221,10 +211,10 @@ pwm_num	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\
 read_register	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\i2c_devices.c	/^BYTE read_register(BYTE address,BYTE regist)$/;"	kind:f	line:68
 readflag	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\Include\grovelib.h	/^unsigned char readflag(void);$/;"	kind:p	line:65
 readflag	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\grovelib.c	/^unsigned char readflag(void)$/;"	kind:f	line:152
-relay	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *relay = new(Dig_io, OUT); $/;"	kind:l	line:395
+relay	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^	void *relay = new(Dig_io, OUT); $/;"	kind:l	line:299
 ret	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\analog_in.c	/^	int ret = ADCVal(self->inter->port->Pin1);$/;"	kind:l	line:90
 ret	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\digital_io.c	/^	int ret = IOGet(self->inter->port->Pin1);$/;"	kind:l	line:151
-rht03	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    void *rht03 = new(RHT03);$/;"	kind:l	line:392
+rht03	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\taskFlyport.c	/^    void *rht03 = new(RHT03);$/;"	kind:l	line:296
 self	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\analog_in.c	/^	struct An_i *self = _self;$/;"	kind:l	line:63
 self	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\analog_in.c	/^	struct An_i *self = _self;$/;"	kind:l	line:89
 self	C:\Users\Michele\Desktop\classe virtuale\prog openpicus 2.2 wifi B\Libs\ExternalLib\digital_io.c	/^	struct Dig_io *self = _self;$/;"	kind:l	line:120

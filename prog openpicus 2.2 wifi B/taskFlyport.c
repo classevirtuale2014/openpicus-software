@@ -24,12 +24,13 @@
 	int ID = 1;
 	
 	//comandi
+	
 	int pompa;
-	int RGB_R = off;
+	//int RGB_R;
 	int RGB_G;
-	int RGB_B = off;
-	int RGB_RB = off;    						//purple
-	int RGB_RG;									//yellow
+	//int RGB_B;
+	//int RGB_RB;    						    //purple led
+	int RGB_RG;									//yellow led
 	
 	//alimentazioni
 	int alimentatore;
@@ -37,7 +38,6 @@
 	
 	int p=0;
 	
-	void *Relay;
 	
 BOOL FirstConnect()
 {		
@@ -161,9 +161,9 @@ BOOL SendUpdate()
 	
 	int len = TCPWrite(WorkSocket, OutBuffer, OutBuffer[0]);
 	
-	char InBuffer[15];
+//	char InBuffer[15];
 	
-	int RxLen = 0;
+//	int RxLen = 0;
 	
 	/*BOOL Continue = FALSE;
 	while(!Continue)
@@ -230,8 +230,7 @@ if(Tempt>arrayset[5])
   }
 if(Terr<(unsigned char)arrayset[2])
   { 
-	  UARTWrite(1, "Terr minore");
-	p=p+1
+	p=p+1;
 	if(p==3)
 	{
 			pompa = on;
@@ -245,7 +244,6 @@ if(Terr<(unsigned char)arrayset[2])
   }
   if(Terr>(unsigned char)arrayset[6])
   {
-	  UARTWrite(1, "Terr maggiore");
 	  p=0;
 	  pompa=off;
 	// operazione da effetture se l'umidità del terreno è maggiore del parametro : regola la pompa in modo che la pompa lavori di meno 
@@ -273,104 +271,7 @@ void serbatoio()
 	}
 }
 */
-/*
-void pompa_acqua()
-{
-	const int pot = 100;                        //Initialize % of power
-	int time = 10;                              //Delay
-	IOInit(p10,out);
-	
-	if(RGB_RB == off)
-	{
-	  if(pompa == on)
-	  {
-	  IOPut(10, on);
 
-	  vTaskDelay(5000);
-	 
-	  IOPut(10, off);
-	  }
-	}
-}
-*/
-
-void led()
-{
-    IOInit(p11,out);                            //connected to Red led
-    IOInit(p12,out);                			//connected to Green led
-    IOInit(p14,out);                			//connected to Blue led
-    if(RGB_G == off)
-	{
-		return;
-	}
-	if(RGB_G == on)
-	{
-		IOPut(p11, on);
-		IOPut(p12, off);
-		IOPut(p13, on);
-		if(RGB_B == on)
-		{
-			IOPut(p11, on);
-		    IOPut(p12, on);
-		    IOPut(p13, off);
-			vTaskDelay(200);
-			if(RGB_RG == on)
-			{
-				IOPut(p11, off);
-		        IOPut(p12, off);
-		        IOPut(p13, on);
-				vTaskDelay(200);
-				IOPut(p11, on);
-		        IOPut(p12, on);
-		        IOPut(p13, off);
-			    vTaskDelay(200);
-			}	
-	    if(RGB_RG == on)
-		{
-			IOPut(p11, off);
-			IOPut(p12, off);
-			IOPut(p13, on);
-			vTaskDelay(200);
-		}
-		}
-	}
-   if(RGB_RB == on)
-	  {
-		IOPut(p11, off);
-		IOPut(p12, on);
-		IOPut(p13, off);
-		vTaskDelay(200);
-		if(RGB_RG == on)
-		{
-			IOPut(p11, off);
-		    IOPut(p12, off);
-		    IOPut(p13, on);
-			vTaskDelay(200);
-			IOPut(p11, off);
-		    IOPut(p12, on);
-		    IOPut(p13, off);
-			vTaskDelay(200);
-		}
-	 if(RGB_R == on)
-	  {
-		IOPut(p11, off);
-		IOPut(p12, on);
-		IOPut(p13, on);
-		vTaskDelay(200);
-		if(RGB_RG == on)
-		 {
-			IOPut(p11, off);
-		    IOPut(p12, off);
-		    IOPut(p13, on);
-			vTaskDelay(200);
-			IOPut(p11, off);
-		    IOPut(p12, on);
-		    IOPut(p13, on);
-			vTaskDelay(200);
-		 }
-	    }
-	  }
-}
 
 
 
@@ -387,6 +288,9 @@ void FlyportTask()
 	{
 		//Accendi led non connessione
 	}
+	IOInit(p11,out);                            //connected to Red led
+    IOInit(p12,out);                			//connected to Green led
+    IOInit(p14,out);                			//connected to Blue led
 
     void *board = new(GroveNest);
     void *rht03 = new(RHT03);
@@ -411,7 +315,7 @@ void FlyportTask()
 	
 	char msg[100];
 	int Send = 0;
-	
+
 	while(1)
 	{
 												// sensor reading
@@ -440,7 +344,7 @@ void FlyportTask()
 			arraysens[3] = Lum;
 		}
 
-/*												// alimentation control
+/*											// alimentation control
 		{   
 	
 							             
@@ -477,34 +381,103 @@ void FlyportTask()
 }
 */
 
-        //serbatoio();
-		led();
+        
 		operazioni();
+		
+		
+		
+		{                          					    // pump control
 		if(pompa==on)
-		{
-			set(relay, on);					        	// open relay contact
+		 {
+			set(relay, on);					        	// close relay contact
 		    vTaskDelay(1000);
-			set(relay, off);					        // close relay contact	
+			set(relay, off);					        // open relay contact	
 			pompa=off;
+		 }
 		}
-		led();
+    
+														// Leds control
 		
+		{
+		if(RGB_G == on)
+	   {
+		IOPut(p11, on);
+		IOPut(p12, off);
+		IOPut(p14, on);
+		/*
+		if(RGB_B == on)
+		{
+			IOPut(p11, on);
+		    IOPut(p12, on);
+		    IOPut(p14, off);
+			vTaskDelay(200);
+			if(RGB_RG == on)
+			{
+				IOPut(p11, off);
+		        IOPut(p12, off);
+		        IOPut(p14, on);
+				vTaskDelay(200);
+				IOPut(p11, on);
+		        IOPut(p12, on);
+		        IOPut(p14, off);
+			    vTaskDelay(200);
+			}	
+		}
+		*/
+	    if(RGB_RG == on)
+		{
+			IOPut(p11, off);
+			IOPut(p12, off);
+			IOPut(p14, on);
+			vTaskDelay(200);
+		}
+	}
+	/*
+   if(RGB_RB == on)
+	  {
+		IOPut(p11, off);
+		IOPut(p12, on);
+		IOPut(p14, off);
+		vTaskDelay(200);
+		if(RGB_RG == on)
+		{
+			IOPut(p11, off);
+		    IOPut(p12, off);
+		    IOPut(p14, on);
+			vTaskDelay(200);
+			IOPut(p11, off);
+		    IOPut(p12, on);
+		    IOPut(p14, off);
+			vTaskDelay(200);
+		}
+	 if(RGB_R == on)
+	  {
+		IOPut(p11, off);
+		IOPut(p12, on);
+		IOPut(p14, on);
+		vTaskDelay(200);
+		if(RGB_RG == on)
+		 {
+			IOPut(p11, off);
+		    IOPut(p12, off);
+		    IOPut(p14, on);
+			vTaskDelay(200);
+			IOPut(p11, off);
+		    IOPut(p12, on);
+		    IOPut(p14, on);
+			vTaskDelay(200);
+		 }
+	    }
+	  }
+*/
 		
+		}	
 		
 		sprintf(msg,"%d %d %d %d %d %d %d \r\n",arrayset[0],arrayset[1],arrayset[2],arrayset[3],arrayset[4],arrayset[5],arrayset[6]);
 		UARTWrite(1, msg);
-		char msgtemp[50];
-		char msghum[50];
-        char msgterr[50];
-		char msglig[50];
-		sprintf(msgtemp,"temperatura: %d \n", Tempt);
-		sprintf(msghum,"umidità aria: %d \n", Humd);
-		sprintf(msgterr,"umidità terreno: %d \n", Terr);
-		sprintf(msglig,"luce: %d \n \n ", Lum);
-		UARTWrite(1, msgtemp);
-		UARTWrite(1, msghum);
-		UARTWrite(1, msgterr);
-		UARTWrite(1, msglig);
+		char msgsens[400];
+		sprintf(msgsens,"temperatura: %d \numidità aria: %d \numidità terreno: %d \nluce: %d \n \n", Tempt,Humd,Terr,Lum);
+		UARTWrite(1, msgsens);
 		vTaskDelay(500);
 		Send++;
 		if(Send == 1)
