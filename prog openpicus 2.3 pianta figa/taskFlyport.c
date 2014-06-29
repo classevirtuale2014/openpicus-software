@@ -60,10 +60,6 @@
         if(repeatInit == TRUE)
         {
             UARTWrite(1, "SDInit()...");
- 
-            // Please, choose your pinout with 
-            //  SDInit(...);
-            // or use instead
               SDOnNest(SD_GROVE, 15);
             
             // if you are using a Grove Nest or Music Nest Carrier Board
