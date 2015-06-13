@@ -1,0 +1,401 @@
+#include "taskFlyport.h"
+#include "grovelib.h"
+#include "rht03.h"
+#include "sd_manager.h"
+#include "thingspeak.h"
+#include "parse.h"
+
+
+	char thingKey [] = "PMYFC2SBKH13AZAW";	
+	char thingTweetKey [] = "QR8UIGUB4873828C";
+	unsigned char Humd ;
+	unsigned char Tempt ;
+	unsigned char Terr ; 
+	unsigned char Lum ;		
+
+
+	char tweetMsg[140];  //array per il tweet 
+	float data[4]; //array per i valori letti dai sensori
+	int arrayset[9]={70,24,100,20,40,18,45,0,0} ; //array contente i valori vitali per tenere in vita la pianta
+	
+	
+	
+	//comandi
+	
+	int pompa = off;
+	int RGB_R = off;   //led rosso
+	int RGB_G = off;   //led verde
+	int RGB_B = off;   //led blu
+	int RGB_RB = off;  // led viola 
+	int RGB_RG = off;  //led giallo
+	
+	int counter_pompa=0;
+	
+	char as[3];  //salvo valore batteria
+	
+	
+
+
+void operazioni()
+{ 
+	if(Humd<arrayset[4])
+	{
+		// operazione da effetture se l'umidità è minore del parametro : invia al server : spostami in un luogo più umido 
+		sprintf(tweetMsg, "AVVISO: L'umidità dell'aria è troppo bassa per me!!\n" );
+		UARTWrite(1, tweetMsg);
+		thingTWEET(thingTweetKey, tweetMsg);
+		sprintf(tweetMsg,"");
+	
+	}
+	if(Humd>arrayset[0])
+	{
+		// operazione da effetture se l'umidità è maggiore del parametro : invia al server : spostami in un luogo più asciutto	
+		sprintf(tweetMsg,"AVVISO: L'umidità dell'aria è troppo elevata per me!!\n" );
+		UARTWrite(1, tweetMsg);
+			thingTWEET(thingTweetKey, tweetMsg);
+			sprintf(tweetMsg,"");
+		
+	}
+	if(Tempt<arrayset[5])
+	{
+		// operazione da effetture se la temperatura è minore del parametro : invia al server: ho freddo 
+		sprintf(tweetMsg, "AVVISO: In questa stanza fa troppo freddo!!\n" );
+		UARTWrite(1, tweetMsg);
+			thingTWEET(thingTweetKey, tweetMsg);
+			sprintf(tweetMsg,"");
+	
+	}
+	if(Tempt>arrayset[1])
+	{
+		// operazione da effetture se la temperature è maggiore del parametro : invia al server : ho caldo 
+		sprintf(tweetMsg, "AVVISO: In questa stanza fa troppo caldo!!\n" );
+		UARTWrite(1, tweetMsg);
+			thingTWEET(thingTweetKey, tweetMsg);
+			sprintf(tweetMsg,"");
+	
+	}
+	if(Terr<=arrayset[6])
+	{ 
+		counter_pompa=counter_pompa+1;
+		if(counter_pompa == 5)
+		{
+			pompa = on;
+			counter_pompa = 0;
+		}	
+	
+		// operazione da effetture se l'umidità del terreno è minore del parametro : accendo la pompa 
+	}
+	if(Terr>arrayset[2])
+	{
+		counter_pompa = 0;
+		pompa = off;
+		// operazione da effetture se l'umidità del terreno è maggiore del parametro : regola la pompa in modo che la pompa lavori di meno 
+	}
+	if(Lum<arrayset[3])
+	{
+		// operazione da effetture se la luce è minore del parametro : invia al server : ho bisogno di luce 
+		RGB_RG = on;
+		sprintf(tweetMsg, "AVVISO: E' troppo buio, ho bisogno di luce!!\n" );
+		UARTWrite(1, tweetMsg);
+		thingTWEET(thingTweetKey, tweetMsg);
+		sprintf(tweetMsg,"");
+	
+	}
+	if(Lum>arrayset[3]) 
+	{
+		//operazione da effettuare se la luce è maggiore del parametro: spegnere led giallo
+		RGB_RG = off;
+	}
+	
+}
+
+void serbatoio()
+{   
+	IOInit(p5, inup);                  	        
+	int c = IOGet(p5);
+	
+		if (c == on)
+		{ 
+			RGB_B = on;             		          //RGB: led blu
+			sprintf(tweetMsg, "AVVISO: Il mio serbatoio è vuoto!!\n" ); 
+			UARTWrite(1, tweetMsg);
+			thingTWEET(thingTweetKey, tweetMsg);
+			sprintf(tweetMsg,"");
+		}
+		else
+		{
+			RGB_B = off;
+		}
+}
+
+void FlyportTask()
+{
+	BOOL ThereIsConnection = FALSE;
+               //Connessione al wifi
+		if(!ThereIsConnection)
+		{
+			WFConnect(WF_DEFAULT);
+			while(WFGetStat() == CONNECTING);
+	
+			if(WFGetStat() == CONNECTED)
+			{
+				ThereIsConnection = TRUE;
+				UARTWrite(1, "\n\n\nWIFI CONNECTED\n");
+				UARTWrite(1,"Flyport Wi-fi G connected...hello world!\r\n");
+			}
+			else
+			{
+				UARTWrite(1, "\n\n\nWIFI NOT CONNECTED");
+			}
+			vTaskDelay(25);
+		}
+	
+	
+	
+	//IO pins for leds
+	IOInit(p11,out);                             //p11 collegato al led rosso 
+    IOInit(p12,out);                			 //p12 collegato al led verde
+    IOInit(p14,out);                			 //p14 collegato al led blu
+ 
+    void *board = new(GroveNest);
+    void *rht03 = new(RHT03);
+	void *light_sensor = new (An_i);
+    void *moisture_sensor = new (An_i);
+	void *relay = new(Dig_io, OUT); 
+	attachToBoard(board, relay, DIG3);          // Relay collegato alla board tramite digital p10 (DIG3)
+    
+	set(relay, ON);								// Turns ON the relay and Closes the relay contact
+    set(relay, OFF);							// Turns OFF the relay and Opens the relay contact	
+
+	
+	attachToBoard(board,rht03,DIG1);            // Sensore temperatura-umidità dell'aria collegato alla board tramite digital port1 (DIG1)
+	attachToBoard(board, light_sensor, AN1);    // Sensore luce collegato alla board tramite analog port 3 (AN3)
+	attachToBoard(board, moisture_sensor, AN2); // Sensore umidità del terrno collegato alla board tramite analog port 2 (AN2)                
+	 
+	configure(rht03, 3);
+	IOInit(p4,inup);
+	IOInit(p6,inup);
+	void *batt = new (An_i);
+	attachToBoard(board, batt, AN3);
+	
+	//alimentazioni
+	//Valore numerico dell'alimentazione dalla rete (0 rete 1 batteria)
+	int alimentatore = 0;
+	//Valore della batteria 
+	unsigned char battery = 0;
+	
+	int flusso = 0;
+	int durata = 1500;           // 10s
+	char msg[100]; //Output mes
+	pompa = off;
+	counter_pompa=0;
+	
+	while(1)
+	{
+		
+		//LETTURA DEI SENSORI E ASSEGNAZIONE A data[]
+		{
+		
+			Terr = (unsigned char) get(moisture_sensor);
+			data[0] = Terr;
+			
+			Lum = (unsigned char) get(light_sensor);
+			data[1] = Lum;
+			
+			Humd = (unsigned char)  get(rht03, HUMD);
+		    data[2]= Humd;
+		
+		    Tempt = (unsigned char) get(rht03, TEMP);
+			data[3] = Tempt;
+			
+			//invio dati 
+			wfTHINGSPEAK(thingKey, data, 4);
+  
+			
+		}
+
+		//CONTROLLO IL TIPO DI ALIMENTAZIONE
+		{
+			battery = (unsigned char) get(batt);
+			
+			//***STAMPA BATTERY
+			
+			sprintf(as, "BATTERIA %d\n", battery);
+			
+			//******
+			
+			//Se il pin6 (alimentazione di rete) è impostato su on, alimentatore viene spostato su on, altrimenti su off.
+			if (IOGet(p6) != on)
+			{
+				alimentatore = off;
+			}
+			else
+			{
+				alimentatore = on;
+			}
+			
+			
+			if(alimentatore == on)
+			{
+				//Se il vaso è attaccato alla rete
+				//accendi il led verde e spegni il led viola
+				RGB_G = on;// RGB: led verde
+				RGB_RB = off;
+				RGB_R = off;
+			}
+			else
+			{
+				//Se il vaso si alimenta dalla batteria
+				//accendi il led viola e spegni il led verde
+				RGB_RB = on;
+				RGB_G = off;
+				RGB_R = off;
+			}
+			
+			if (battery <= 15)
+			{
+				RGB_R = on;                       // RGB: led rosso
+				sprintf(tweetMsg, "AVVISO: Batteria quasi scarica\n");	
+				UARTWrite(1, tweetMsg);
+			thingTWEET(thingTweetKey, tweetMsg);
+			sprintf(tweetMsg,"");
+			}
+			
+		}
+			
+		
+
+		operazioni();
+		
+		
+		serbatoio();
+		
+		
+	
+		 
+		//CONTROLLO POMPA
+		if(pompa == on)
+		{
+	    	if(RGB_RB == off)
+			{
+				set(relay, on);								// close relay contact
+				vTaskDelay(1000);
+				
+				int j=0;
+				for(j=0; j<=(durata/1000); j++)
+				{
+					flusso = IOGet(p4);
+					if(flusso != on)
+					{
+						vTaskDelay(250);
+						//sprintf(fluss,"%d\n\r", flusso);
+						//UARTWrite(1,fluss);
+					}
+					else
+					{
+						j = (durata/1000); 
+						flusso = IOGet(p4);
+						pompa = off;
+						//sprintf(fluss,"%d\n\r", flusso);
+						//UARTWrite(1,fluss);
+					}
+				}
+				
+				set(relay, off);
+				sprintf(tweetMsg, "AVVISO: La pianta è stata annaffiata !!\n");
+				UARTWrite(1, tweetMsg);
+				thingTWEET(thingTweetKey, tweetMsg);
+				sprintf(tweetMsg,"");// open relay contact
+			}
+			
+			
+		pompa = off;
+		}
+		
+		// Leds control
+
+		 
+		if(RGB_G == on)
+	    {
+			IOPut(p11, off);
+			IOPut(p12, on);
+			IOPut(p14, off);
+		
+			if(RGB_B == on)
+				{
+				IOPut(p11, off);
+				IOPut(p12, off);
+				IOPut(p14, on);
+				vTaskDelay(200);
+			
+				if(RGB_RG == on)
+					{
+					IOPut(p11, on);
+					IOPut(p12, on);
+					IOPut(p14, off);
+					vTaskDelay(200);
+					IOPut(p11, off);
+					IOPut(p12, off);
+					IOPut(p14, on);
+					vTaskDelay(200);
+					}	
+				}
+		if(RGB_RG == on)
+		{
+			IOPut(p11, on);
+			IOPut(p12, on);
+			IOPut(p14, off);
+		}
+		}
+		
+		if((RGB_R == on)&&(RGB_RB == on))
+			{
+			IOPut(p11, on);
+			IOPut(p12, off);
+			IOPut(p14, off);
+			vTaskDelay(200);
+			if(RGB_RG == on)
+				{
+				IOPut(p11, on);
+				IOPut(p12, on);
+				IOPut(p14, off);
+				vTaskDelay(200);
+				IOPut(p11, on);
+				IOPut(p12, off);
+				IOPut(p14, off);
+				vTaskDelay(200);
+				}
+			}
+		if((RGB_RB == on)&&(RGB_R == off))
+		{
+			IOPut(p11, on);
+			IOPut(p12, off);
+			IOPut(p14, on);
+			vTaskDelay(200);
+			if(RGB_RG == on)
+			{
+				IOPut(p11, on);
+				IOPut(p12, on);
+				IOPut(p14, off);
+				vTaskDelay(200);
+				IOPut(p11, on);
+				IOPut(p12, off);
+				IOPut(p14, on);
+				vTaskDelay(200);
+			}
+		}
+		
+		
+		
+		//UARTWrite(1, msg);
+		char msgsens[400];
+		sprintf(msgsens,"Temperatura: %d \nUmidita Aria: %d \nUmidita Terreno: %d \nLuce: %d \n ", Tempt,Humd,Terr,Lum);
+		UARTWrite(1, msgsens);
+		UARTWrite(1, as); 
+		//UARTWrite(1, batt);
+		vTaskDelay(200);
+		
+		
+	}
+}
+	
